@@ -38,8 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
     'app',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -104,6 +114,68 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# REST_AUTH = {
+# 'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
+#     'TOKEN_SERIALIZER': 'dj_rest_auth.serializers.TokenSerializer',
+#     'JWT_SERIALIZER': 'dj_rest_auth.serializers.JWTSerializer',
+#     'JWT_SERIALIZER_WITH_EXPIRATION': 'dj_rest_auth.serializers.JWTSerializerWithExpiration',
+#     'JWT_TOKEN_CLAIMS_SERIALIZER': 'rest_framework_simplejwt.serializers.TokenObtainPairSerializer',
+#     'USER_DETAILS_SERIALIZER': 'dj_rest_auth.serializers.UserDetailsSerializer',
+#     'PASSWORD_RESET_SERIALIZER': 'dj_rest_auth.serializers.PasswordResetSerializer',
+#     'PASSWORD_RESET_CONFIRM_SERIALIZER': 'dj_rest_auth.serializers.PasswordResetConfirmSerializer',
+#     'PASSWORD_CHANGE_SERIALIZER': 'dj_rest_auth.serializers.PasswordChangeSerializer',
+#
+#     'REGISTER_SERIALIZER': 'dj_rest_auth.registration.serializers.RegisterSerializer',
+#
+#     'TOKEN_MODEL': 'rest_framework.authtoken.models.Token',
+#     'TOKEN_CREATOR': 'dj_rest_auth.utils.default_create_token',
+#
+#     'LOGOUT_ON_PASSWORD_CHANGE': True,
+#     'SESSION_LOGIN': True,
+#
+#     'USE_JWT': True,
+#     'JWT_AUTH_COOKIE': 'auth_token',
+#     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
+# }
+
+REST_AUTH = {
+    'LOGOUT_ON_PASSWORD_CHANGE': True, #???
+    # 'SESSION_LOGIN': True,
+
+    'USE_JWT': True,
+    # 'JWT_AUTH_COOKIE': 'auth_token',
+    # 'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
+}
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.TokenAuthentication',
+#         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+#     ),
+#     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+# }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+    'JWT_AUTH_COOKIE': 'auth_token',
+    'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
+    'JWT_AUTH_ACCESS_TOKEN_LIFETIME': 900,
+    'JWT_AUTH_REFRESH_TOKEN_LIFETIME': 86400,
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_NOTIFICATIONS = True
+ACCOUNT_USERNAME_MIN_LENGTH = 8 #???
 
 
 # Internationalization
