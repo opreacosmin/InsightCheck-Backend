@@ -3,28 +3,6 @@ from django.db import models
 
 # Create your models here.
 
-# class User(models.Model):
-#     username = models.CharField(
-#         unique=True,
-#         max_length=30,
-#     )
-#     password = models.CharField(
-#         max_length=20,
-#     )
-#     email = models.EmailField(
-#         unique=True,
-#         blank=True,
-#         null=True
-#     )
-#     money = models.DecimalField(
-#         max_digits=8,
-#         decimal_places=2,
-#         default=0.00
-#     )
-#
-#     def __str__(self):
-#         return f"USER: {self.username}"
-
 class Profile(models.Model):
     userID = models.OneToOneField(
         User,
@@ -50,13 +28,9 @@ class Card(models.Model):
         decimal_places=2,
         default=0.00
     )
-    currency = models.CharField(  #TODO: models.PositiveSmallIntegerField ??? FK for table with currencies ???
+    currency = models.CharField(
         max_length=3,
     )
-    # userID = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE
-    # )
     profileID = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE
@@ -66,10 +40,10 @@ class Card(models.Model):
         return f"CARD: XXXX XXXX XXXX {str(self.card_number)[-4:]}"
 
 class TransactionType(models.Model):
-    descr = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"TRANSACTION TYPE: {self.descr}"
+        return f"TRANSACTION TYPE: {self.description}"
 
 class Transaction(models.Model):
     amount = models.DecimalField(
@@ -77,7 +51,6 @@ class Transaction(models.Model):
         decimal_places=2
     )
     date_time = models.DateTimeField()
-    # type = models.PositiveSmallIntegerField()
     trader = models.CharField(max_length=100)
     cardID = models.ForeignKey(
         Card,
@@ -92,27 +65,24 @@ class Transaction(models.Model):
         return f"TRANSACTION: {self.date_time} | {self.trader}"
 
 class LimitType(models.Model):
-    descr = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"LIMIT TYPE: {self.descr}"
+        return f"LIMIT TYPE: {self.description}"
 
 class Limit(models.Model):
     amount = models.DecimalField(
         max_digits=8,
         decimal_places=2
     )
-    # type = models.PositiveSmallIntegerField()
+    recurring = models.BooleanField() #0-false, 1-true
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=200)
     period_start = models.DateField()
     period_end = models.DateField()
-    target_date = models.DateField()
-    currency = models.CharField(  #TODO: models.PositiveSmallIntegerField ??? FK for table with currencies ???
+    currency = models.CharField(
         max_length=3,
     )
-    # userID = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE
-    # )
     profileID = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE
@@ -123,7 +93,7 @@ class Limit(models.Model):
     )
 
     def __str__(self):
-        return f"LIMIT: {self.period_start} - {self.period_end} | {self.target_date} | {self.amount} {self.currency}"
+        return f"LIMIT: {self.name} | {self.period_start} - {self.period_end} | {self.amount} {self.currency}"
 
 class SavingsPlan(models.Model):
     name = models.CharField(max_length=50)
@@ -135,10 +105,6 @@ class SavingsPlan(models.Model):
         max_digits=8,
         decimal_places=2
     )
-    # userID = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE
-    # )
     profileID = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE

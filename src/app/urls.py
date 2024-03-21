@@ -19,5 +19,8 @@ from . import views
 
 
 urlpatterns = [
-    path('api/getCards', views.getCardsView.as_view()),
+    path('api/cards/', views.CardsView.as_view()),
+    path('api/oneCard/<int:card_id>/', views.OneCardView.as_view()),
+    path('api/limits/', views.LimitsView.as_view()),
+    path('api/oneLimit/<int:limit_id>/', views.OneLimitView.as_view()),
 ]

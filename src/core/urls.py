@@ -19,9 +19,9 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
 
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('app.urls')),
-    path('api/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/refreshToken', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/logout', TokenBlacklistView.as_view(), name='token_blacklist'),
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/refreshToken/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/logout/', TokenBlacklistView.as_view(), name='token_blacklist'),
 ]
